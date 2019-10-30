@@ -34,7 +34,7 @@ components:{chunLeiPopups},
 | y | Number | 0 | 宽度375下的y |
 | popData | Array | [] | 数据 |
 | theme | String | 'light' | 主题light dark |
-| dynamic | Boolean | false | 是否动态设置x,y |
+| dynamic | Boolean | false | 是否动态设置x,y和设置placement |
 | gap | Number | 20 | 距离屏幕边界的最小距离 |
 
 
