@@ -28,14 +28,15 @@ components:{chunLeiPopups},
 | --- | --- | --- | --- |
 | maskBg | String | 'rgba(0,0,0,0)' | 遮罩层颜色 |
 | value | Boolean | false | 是否显示 |
-| placement | String | 'top-start' | 三角行方向 top-start top-end bottom-start bottom-end |
+| placement | String | 'default' | 默认值时动态设置三角行方向 top-start top-end bottom-start bottom-end |
 | direction | String | 'column' | flex-direction |
 | x | Number | 0 | 宽度375下的x |
 | y | Number | 0 | 宽度375下的y |
 | popData | Array | [] | 数据 |
 | theme | String | 'light' | 主题light dark |
-| dynamic | Boolean | false | 是否动态设置x,y和设置placement |
+| dynamic | Boolean | false | x,y是否动态设置 |
 | gap | Number | 20 | 距离屏幕边界的最小距离 |
+| triangle | Boolean | true | 三角形是否存在 |
 
 
 ## 事件
