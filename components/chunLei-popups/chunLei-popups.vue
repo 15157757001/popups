@@ -1,7 +1,7 @@
 <template>
 	<view class="mask" :class="!show?'':'mask-show'" :style="{backgroundColor:show?maskBg:'background:rgba(0,0,0,0)'}" @tap="tapMask">
 		<view class="popups" :style="{top: popupsTop ,left: popupsLeft,flexDirection:direction}" :class="theme">
-			<text :class="dynPlace" :style="{width:'0px',height:'0px'}"></text>
+			<text :class="dynPlace" :style="{width:'0px',height:'0px'}" v-if="triangle"></text>
 			<view v-for="(item,index) in popData" :key="index" @tap.stop="tapItem(item)" class="itemChild" :class="direction=='row'?'solid-right':'solid-bottom'">
 				<image :src="item.icon" v-if="item.icon"></image>{{item.title}}
 			</view>
@@ -19,7 +19,7 @@
 			},
 			placement:{
 				type:String,
-				default:'top-start' //top-start top-end bottom-start bottom-end 
+				default:'default' //default top-start top-end bottom-start bottom-end 
 			},
 			direction:{
 				type:String,
@@ -52,6 +52,10 @@
 			gap:{
 				type:Number,
 				default:20
+			},
+			triangle:{
+				type:Boolean,
+				default:true
 			}
 		},
 		data(){
@@ -105,7 +109,7 @@
 					// #ifdef H5
 					y = this.dynamic?(this.y+statusBar): this.transformRpx(this.y+statusBar)
 					// #endif  
-					this.dynPlace = this.dynamic?this.getPlacement(x,y):this.placement
+					this.dynPlace = this.placement=='default'?this.getPlacement(x,y):this.placement
 					
 					switch(this.dynPlace){
 						case 'top-start':
@@ -220,7 +224,7 @@
 		}
 	}
 	.dark{
-		background-color: rgba(0, 0, 0, 0.8);
+		background-color: #4C4C4C;
 		color: #fff;
 		.top-start:after {
 			content: "";
@@ -229,7 +233,7 @@
 			left: 10rpx;
 			border-width: 0 20rpx 20rpx;
 			border-style: solid;
-			border-color: transparent transparent rgba(0, 0, 0, 0.8);
+			border-color: transparent transparent #4C4C4C;
 		}
 		.top-end:after {
 			content: "";
@@ -238,7 +242,7 @@
 			right: 10rpx;
 			border-width: 0 20rpx 20rpx;
 			border-style: solid;
-			border-color: transparent transparent rgba(0, 0, 0, 0.8);
+			border-color: transparent transparent #4C4C4C;
 		}
 		.bottom-start:after {
 			content: "";
@@ -247,7 +251,7 @@
 			left: 10rpx;
 			border-width: 20rpx 20rpx 0 ;
 			border-style: solid;
-			border-color: rgba(0, 0, 0, 0.8) transparent transparent ;
+			border-color: #4C4C4C transparent transparent ;
 			
 		}
 		.bottom-end:after {
@@ -257,7 +261,7 @@
 			right: 10rpx;
 			border-width: 20rpx 20rpx 0 ;
 			border-style: solid;
-			border-color: rgba(0, 0, 0, 0.8) transparent transparent ;
+			border-color: #4C4C4C transparent transparent ;
 		}
 	}
 	.light{
