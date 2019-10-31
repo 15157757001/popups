@@ -1,19 +1,19 @@
 <template>
 	<view class="content">
 		<view class="light">
-			<text @tap="taptext($event,1)">动态获取</text>
-			<text @tap="value1=!value1">白色纵向</text>
+			<text @tap="taptext($event,0)">动态三角指向</text>
+			<text @tap="value1=!value1">固定白色纵向</text>
 		</view>
 		<text>黑色横向</text>
 		<view class="dark">
 			<view>
-				<text @tap="value2=!value2">top-start</text>
+				<text @tap="taptext($event,2)">top-start</text>
 				
-				<text @tap="value3=!value3">top-end</text>
+				<text @tap="taptext($event,3)">top-end</text>
 			</view>
 			<view>
-				<text @tap="value4=!value4">bottom-start</text>
-				<text @tap="value5=!value5">bottom-end</text>
+				<text @tap="taptext($event,4)">bottom-start</text>
+				<text @tap="taptext($event,5)">bottom-end</text>
 			</view>
 		</view>
 		<chunLei-popups v-model="value0" :x="x" :y="y" dynamic>
@@ -22,21 +22,21 @@
 		<chunLei-popups v-model="value1" :popData="data1" @tapPopup="tapPopup" :x="344" :y="20" placement="top-end">
 			
 		</chunLei-popups>
-		<chunLei-popups v-model="value2" :popData="data2" @tapPopup="tapPopup" :x="66" :y="170" direction="row" theme="dark" >
+		<chunLei-popups v-model="value2" :popData="data2" @tapPopup="tapPopup" :x="x" :y="y" direction="row" theme="dark" dynamic>
 			
 		</chunLei-popups>
-		<chunLei-popups v-model="value3" :popData="data2" @tapPopup="tapPopup" :x="303" :y="170" direction="row" theme="dark" placement="top-end">
+		<chunLei-popups v-model="value3" :popData="data2" @tapPopup="tapPopup" :x="x" :y="y" direction="row" theme="dark" placement="top-end" dynamic>
 			
 		</chunLei-popups>
-		<chunLei-popups v-model="value4" :popData="data2" @tapPopup="tapPopup" :x="84" :y="430" direction="row" theme="dark" placement="bottom-start">
+		<chunLei-popups v-model="value4" :popData="data2" @tapPopup="tapPopup" :x="x" :y="y" direction="row" theme="dark" placement="bottom-start" dynamic>
 			
 		</chunLei-popups>
-		<chunLei-popups v-model="value5" :popData="data2" @tapPopup="tapPopup" :x="302" :y="430" direction="row" theme="dark" placement="bottom-end">
+		<chunLei-popups v-model="value5" :popData="data2" @tapPopup="tapPopup" :x="x" :y="y" direction="row" theme="dark" placement="bottom-end" dynamic>
 			
 		</chunLei-popups>
 		<view class="light">
-			<text @tap="taptext($event,1)">动态获取</text>
-			<text @tap="taptext($event,1)">动态获取</text>
+			<text @tap="taptext($event,0)">动态三角指向</text>
+			<text @tap="tapOut($event,5)" id="text">不遮挡文字指向边框中点</text>
 		</view>
 	</view>
 </template>
@@ -96,10 +96,19 @@
 				})
 			},
 			taptext(e,index){
-				console.log(e,index)
 				this.x = e.touches[0].clientX
 				this.y = e.touches[0].clientY
-				this.value0 = !this.value0
+				this[`value${index}`] = !this[`value${index}`]
+			},
+			tapOut(e,index){
+				let dom = uni.createSelectorQuery().in(this)
+				dom.select("#text").boundingClientRect()
+				dom.exec((data) => {
+					this.x = (data[0].left+data[0].right)/2
+					this.y = data[0].top
+					this[`value${index}`] = !this[`value${index}`]
+				})
+			
 			}
 		}
 	}
