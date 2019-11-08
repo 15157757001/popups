@@ -2,7 +2,8 @@
 	<view class="mask" :class="!show?'':'mask-show'" :style="{backgroundColor:show?maskBg:'background:rgba(0,0,0,0)'}" @tap="tapMask">
 		<view class="popups" :style="{top: popupsTop ,left: popupsLeft,flexDirection:direction}" :class="theme">
 			<text :class="dynPlace" :style="{width:'0px',height:'0px'}" v-if="triangle"></text>
-			<view v-for="(item,index) in popData" :key="index" @tap.stop="tapItem(item)" class="itemChild" :class="direction=='row'?'solid-right':'solid-bottom'">
+			<view v-for="(item,index) in popData" :key="index" @tap.stop="tapItem(item)" 
+				class="itemChild" :class="[direction=='row'?'solid-right':'solid-bottom',item.disabled?'disabledColor':'']">
 				<image :src="item.icon" v-if="item.icon"></image>{{item.title}}
 			</view>
 			<slot></slot>
@@ -75,6 +76,7 @@
 				this.$emit('input',!this.value)
 			},
 			tapItem(item){
+				if(item.disabled) return
 				this.$emit('tapPopup',item)
 				this.$emit('input',!this.value)
 			},
@@ -263,9 +265,12 @@
 			border-style: solid;
 			border-color: #4C4C4C transparent transparent ;
 		}
+		.disabledColor{
+			color: #c5c8ce;
+		}
 	}
 	.light{
-		
+		color: #515a6e;
 		box-shadow: 0upx 0upx 30upx rgba(0,0,0,0.2);
 		background: #fff;
 		.top-start:after {
@@ -304,6 +309,9 @@
 			border-width: 20rpx 20rpx 0 ;
 			border-style: solid;
 			border-color: #fff transparent transparent ;
+		}
+		.disabledColor{
+			color: #c5c8ce;
 		}
 	}
 	.solid-bottom{

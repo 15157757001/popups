@@ -60,7 +60,8 @@
 				data1:[
 					{
 						title:'创建群聊',
-						icon:'../../static/chuangjianqunliao-lan.png'
+						icon:'../../static/chuangjianqunliao-lan.png',
+						disabled:true
 					},
 					{
 						title:'加好友/群',
@@ -79,7 +80,7 @@
 						icon:'../../static/shoufukuan.png'
 					}
 				],
-				data2:[{title:'复制'},{title:'转发'},{title:'回复'},{title:'删除'}]
+				data2:[{title:'复制',disabled:true},{title:'转发'},{title:'回复'},{title:'删除'}]
 			}
 		},
 		onLoad() {
