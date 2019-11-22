@@ -80,7 +80,7 @@
 				this.$emit('tapPopup',item)
 				this.$emit('input',!this.value)
 			},
-			async popupsPosition(){
+			getStatusBar(){
 				let promise = new Promise((resolve,reject)=>{
 					uni.getSystemInfo({
 						success: function(e) {
@@ -96,42 +96,50 @@
 						}
 					})
 				})
-				let statusBar = await promise
-				//statusBar = 0
-				let popupsDom = uni.createSelectorQuery().in(this).select(".popups")
-				popupsDom.fields({
-				    size: true,  
-				}, (data) => {
-					let width = data.width
-					let height = data.height
-					let y = this.dynamic?this.dynamicGetY(this.y,this.gap):this.transformRpx(this.y)
+				return promise
+			},
+			async popupsPosition(){
+				let statusBar = await this.getStatusBar()
+				let promise = new Promise((resolve,reject)=>{
+					let popupsDom = uni.createSelectorQuery().in(this).select(".popups")
+					popupsDom.fields({
+					    size: true,  
+					}, (data) => {
+						let width = data.width
+						let height = data.height
+						let y = this.dynamic?this.dynamicGetY(this.y,this.gap):this.transformRpx(this.y)
+						
+						let x = this.dynamic?this.dynamicGetX(this.x,this.gap):this.transformRpx(this.x)
+						
+						// #ifdef H5
+						y = this.dynamic?(this.y+statusBar): this.transformRpx(this.y+statusBar)
+						// #endif  
+						this.dynPlace = this.placement=='default'?this.getPlacement(x,y):this.placement
+						
+						switch(this.dynPlace){
+							case 'top-start':
+								this.popupsTop = `${y+9}px`
+								this.popupsLeft = `${x-15}px`
+								break;
+							case 'top-end':
+								this.popupsTop = `${y+9}px`
+								this.popupsLeft = `${x+15-width}px`
+								break;
+							case 'bottom-start':
+								this.popupsTop = `${y-18-height}px`
+								this.popupsLeft = `${x-15}px`
+								break;
+							case 'bottom-end':
+								this.popupsTop = `${y-9-height}px`
+								this.popupsLeft = `${x+15-width}px`
+								break;
+						}
+						resolve()
+					}).exec();
 					
-					let x = this.dynamic?this.dynamicGetX(this.x,this.gap):this.transformRpx(this.x)
-					
-					// #ifdef H5
-					y = this.dynamic?(this.y+statusBar): this.transformRpx(this.y+statusBar)
-					// #endif  
-					this.dynPlace = this.placement=='default'?this.getPlacement(x,y):this.placement
-					
-					switch(this.dynPlace){
-						case 'top-start':
-							this.popupsTop = `${y+9}px`
-							this.popupsLeft = `${x-15}px`
-							break;
-						case 'top-end':
-							this.popupsTop = `${y+9}px`
-							this.popupsLeft = `${x+15-width}px`
-							break;
-						case 'bottom-start':
-							this.popupsTop = `${y-18-height}px`
-							this.popupsLeft = `${x-15}px`
-							break;
-						case 'bottom-end':
-							this.popupsTop = `${y-9-height}px`
-							this.popupsLeft = `${x+15-width}px`
-							break;
-					}
-				}).exec();
+				})
+				return promise
+				
 			},
 			getPlacement(x,y){
 				let width = uni.getSystemInfoSync().windowWidth
@@ -172,15 +180,9 @@
 		watch:{
 			value:{
 				immediate:true,
-				handler(newVal,oldVal){
-					if(newVal) this.popupsPosition()
-					if(!this.dynamic){
-						this.show = newVal
-					}else{
-						setTimeout(()=>{
-							this.show = newVal
-						},100)
-					}
+				handler:async function (newVal,oldVal){
+					if(newVal) await this.popupsPosition()
+					this.show = newVal
 				}
 			},
 			placement:{
