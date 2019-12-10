@@ -89,6 +89,12 @@
 		mounted() {
 		
 		},
+		//监听滚动隐藏
+		onPageScroll(){
+			for (let i = 0; i < 6; i++) {
+				this[`value${i}`] = false
+			}
+		},
 		methods: {
 			tapPopup(e){
 				uni.showToast({
