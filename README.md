@@ -28,6 +28,7 @@ components:{chunLeiPopups},
 | --- | --- | --- | --- |
 | maskBg | String | 'rgba(0,0,0,0)' | 遮罩层颜色 |
 | value | Boolean | false | 是否显示 |
+| nav| Boolean | true | 是否存在原生导航 |
 | placement | String | 'default' | 默认值时动态设置三角行方向 top-start top-end bottom-start bottom-end |
 | direction | String | 'column' | flex-direction |
 | x | Number | 0 | 宽度375下的x |
