@@ -57,6 +57,10 @@
 			triangle:{
 				type:Boolean,
 				default:true
+			},
+			nav:{
+				type:Boolean,
+				default:true
 			}
 		},
 		data(){
@@ -110,10 +114,12 @@
 						let y = this.dynamic?this.dynamicGetY(this.y,this.gap):this.transformRpx(this.y)
 						
 						let x = this.dynamic?this.dynamicGetX(this.x,this.gap):this.transformRpx(this.x)
-						
-						// #ifdef H5
-						y = this.dynamic?(this.y+statusBar): this.transformRpx(this.y+statusBar)
-						// #endif  
+						if(this.nav){
+							// #ifdef H5
+							y = this.dynamic?(this.y+statusBar): this.transformRpx(this.y+statusBar)
+							// #endif 
+						}
+						 
 						this.dynPlace = this.placement=='default'?this.getPlacement(x,y):this.placement
 						
 						switch(this.dynPlace){
