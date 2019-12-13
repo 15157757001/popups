@@ -2,6 +2,10 @@
 
 气泡菜单
 
+## 说明
+
+h5设置的x，y和元素位置赋值不符。需要nav属性判断是否存在原生导航。
+
 ## 使用方式
 
 **在index.js中**  
@@ -28,6 +32,7 @@ components:{chunLeiPopups},
 | --- | --- | --- | --- |
 | maskBg | String | 'rgba(0,0,0,0)' | 遮罩层颜色 |
 | value | Boolean | false | 是否显示 |
+| nav| Boolean | true | 是否存在原生导航 |
 | placement | String | 'default' | 默认值时动态设置三角行方向 top-start top-end bottom-start bottom-end |
 | direction | String | 'column' | flex-direction |
 | x | Number | 0 | 宽度375下的x |
