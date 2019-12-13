@@ -1,10 +1,11 @@
 <template>
-	<view class="mask" :class="!show?'':'mask-show'" :style="{backgroundColor:show?maskBg:'background:rgba(0,0,0,0)'}" @tap="tapMask">
-		<view class="popups" :style="{top: popupsTop ,left: popupsLeft,flexDirection:direction}" :class="theme">
+	<view class="mask" :class="!show?'':'mask-show'" :style="{backgroundColor:show?maskBg:'rgba(0,0,0,0)'}" @tap="tapMask">
+		<view class="popups" :class="[theme]"
+			:style="{top: popupsTop ,left: popupsLeft,flexDirection:direction}">
 			<text :class="dynPlace" :style="{width:'0px',height:'0px'}" v-if="triangle"></text>
 			<view v-for="(item,index) in popData" :key="index" @tap.stop="tapItem(item)" 
-				class="itemChild" :class="[direction=='row'?'solid-right':'solid-bottom',item.disabled?'disabledColor':'']">
-				<image :src="item.icon" v-if="item.icon"></image>{{item.title}}
+				class="itemChild view" :class="[direction=='row'?'solid-right':'solid-bottom',item.disabled?'disabledColor':'']">
+				<image class="image" :src="item.icon" v-if="item.icon"></image>{{item.title}}
 			</view>
 			<slot></slot>
 		</view>
@@ -57,10 +58,6 @@
 			triangle:{
 				type:Boolean,
 				default:true
-			},
-			nav:{
-				type:Boolean,
-				default:true
 			}
 		},
 		data(){
@@ -88,13 +85,12 @@
 				let promise = new Promise((resolve,reject)=>{
 					uni.getSystemInfo({
 						success: function(e) {
+							
 							let customBar
-							// #ifndef MP
-							if (e.platform == 'android') {
-								customBar = e.statusBarHeight + 50;
-							} else {
-								customBar = e.statusBarHeight + 45;
-							};
+							// #ifdef H5
+					
+							customBar = e.statusBarHeight + e.windowTop;
+
 							// #endif
 							resolve(customBar)
 						}
@@ -111,15 +107,16 @@
 					}, (data) => {
 						let width = data.width
 						let height = data.height
+						
 						let y = this.dynamic?this.dynamicGetY(this.y,this.gap):this.transformRpx(this.y)
 						
 						let x = this.dynamic?this.dynamicGetX(this.x,this.gap):this.transformRpx(this.x)
-						if(this.nav){
-							// #ifdef H5
-							y = this.dynamic?(this.y+statusBar): this.transformRpx(this.y+statusBar)
-							// #endif 
-						}
-						 
+					
+						
+						// #ifdef H5
+						y = this.dynamic?(this.y+statusBar): this.transformRpx(this.y+statusBar)
+						// #endif 
+						
 						this.dynPlace = this.placement=='default'?this.getPlacement(x,y):this.placement
 						
 						switch(this.dynPlace){
@@ -222,10 +219,10 @@
 		padding: 20rpx;
 		border-radius: 5px;
 		display:flex;
-		view{
+		.view{
 			padding: 10rpx;
 		}
-		image{
+		.image{
 			display: inline-block;
 			vertical-align: middle;
 			width: 40rpx;

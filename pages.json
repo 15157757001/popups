@@ -5,6 +5,7 @@
 			"style": {
 				"navigationBarTitleText": "uni-app",
 				"navigationStyle":"custom"
+				
 			}
 		}
 	],

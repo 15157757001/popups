@@ -105,6 +105,7 @@
 			taptext(e,index){
 				this.x = e.touches[0].clientX
 				this.y = e.touches[0].clientY
+				
 				this[`value${index}`] = !this[`value${index}`]
 			},
 			tapOut(e,index){
